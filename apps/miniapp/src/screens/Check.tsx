@@ -9,13 +9,14 @@ import {
   type Interval,
   type SystemProfile,
 } from '@batareyka/calc';
-import { AlertTriangle, Check as CheckIcon, CircleCheck, CircleX, Lightbulb, Minus, Siren, Unplug, X, Zap } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { AlertTriangle, Check as CheckIcon, CircleCheck, CircleX, Info, Lightbulb, Minus, Siren, Unplug, X, Zap } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api, type Home } from '../lib/api';
 import { duration, times, wh } from '../lib/format';
 import { schedule as loadSchedule, type Schedule } from '../lib/svitlomap';
 import { haptic } from '../lib/telegram';
-import { Card, NumberInput, Toggle } from '../ui';
+import { INTRO } from '../lib/tips';
+import { Card, NumberInput, Sheet, Toggle } from '../ui';
 
 const SOC_KEY = 'batareyka.soc';
 const readSoc = (): number | null => {
@@ -39,6 +40,15 @@ const VERDICT = {
   tight: { icon: AlertTriangle, text: 'Впритик', cls: 'text-amber-700 dark:text-amber-300', tint: 'rgb(245 158 11 / 0.24)' },
   no: { icon: CircleX, text: 'Не вистачить', cls: 'text-red-700 dark:text-red-300', tint: 'rgb(239 68 68 / 0.22)' },
 } as const;
+const INTRO_KEY = 'batareyka.introSeen';
+const introSeen = () => {
+  try {
+    return localStorage.getItem(INTRO_KEY) === '1';
+  } catch {
+    return true;
+  }
+};
+
 const AMBER = 'rgb(245 158 11 / 0.22)';
 const RED = 'rgb(239 68 68 / 0.22)';
 
@@ -49,6 +59,15 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
   const [schedError, setSchedError] = useState(false);
   const [manual, setManual] = useState<{ h: number | null; m: number | null } | null>(null);
   const [overrides, setOverrides] = useState<Record<string, boolean>>({});
+  const [intro, setIntro] = useState(() => !introSeen());
+  const closeIntro = useCallback(() => {
+    setIntro(false);
+    try {
+      localStorage.setItem(INTRO_KEY, '1');
+    } catch {
+      /* приватний режим */
+    }
+  }, []);
 
   useEffect(() => {
     const t = setInterval(() => setNow(Date.now()), 60_000);
@@ -107,7 +126,21 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
 
   return (
     <div className="space-y-4 p-4">
-      <h1 className="px-2 pt-3 pb-1 text-[28px] leading-tight font-bold tracking-tight">Вистачить?</h1>
+      <div className="flex items-center justify-between px-2 pt-3 pb-1">
+        <h1 className="text-[28px] leading-tight font-bold tracking-tight">Вистачить?</h1>
+        <button
+          type="button"
+          aria-label="Як це працює"
+          onClick={() => {
+            haptic();
+            setIntro(true);
+          }}
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--fill)] text-fg/70 active:opacity-60"
+        >
+          <Info size={20} />
+        </button>
+      </div>
+      <Sheet open={intro} onClose={closeIntro} content={INTRO} />
 
       {sched?.emergency && (
         <Card tint={RED}>

@@ -90,3 +90,13 @@ input[type='number']::-webkit-outer-spin-button { -webkit-appearance: none; marg
 input[type='number'] { -moz-appearance: textfield; }
 
 input[type='range'] { accent-color: var(--color-accent); }
+
+/* Нижня картка-підказка */
+@keyframes sheet-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes sheet-down { from { transform: translateY(0); } to { transform: translateY(100%); } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+.sheet-in .sheet-panel { animation: sheet-up 0.32s cubic-bezier(0.32, 0.72, 0, 1); }
+.sheet-in .sheet-backdrop { animation: fade-in 0.25s ease-out; }
+.sheet-out .sheet-panel { animation: sheet-down 0.25s ease-in forwards; }
+.sheet-out .sheet-backdrop { animation: fade-out 0.25s ease-in forwards; }

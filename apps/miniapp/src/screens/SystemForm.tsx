@@ -1,6 +1,7 @@
 import { batteryWhFromAh, defaultSocMinPct, type Chemistry } from '@batareyka/calc';
 import { useState } from 'react';
 import type { Home } from '../lib/api';
+import { TIP_EFFICIENCY, TIP_IDLE, TIP_MAX_W, TIP_SOC_MIN } from '../lib/tips';
 import { Field, NumberInput, Segmented } from '../ui';
 
 const VOLTAGES = [12, 24, 48, 51.2] as const;
@@ -81,16 +82,16 @@ export function SystemForm({
         />
       </Field>
 
-      <Field label="Мінімальний заряд" hint="Нижче цього рівня батарею не розряджаємо">
+      <Field label="Мінімальний заряд" info={TIP_SOC_MIN} hint="Нижче цього рівня батарею не розряджаємо">
         <NumberInput value={home.socMinPct} min={0} max={95} suffix="%" onChange={(v) => onChange({ socMinPct: v ?? 0 })} />
       </Field>
 
       {advanced && (
         <>
-          <Field label="Власне споживання інвертора" hint="Скільки показує інвертор, коли все вимкнено">
+          <Field label="Власне споживання інвертора" info={TIP_IDLE} hint="Скільки показує інвертор, коли все вимкнено">
             <NumberInput value={home.idleW} min={0} suffix="Вт" onChange={(v) => onChange({ idleW: v ?? 0 })} />
           </Field>
-          <Field label="ККД" hint="Зазвичай 0.85–0.95">
+          <Field label="ККД" info={TIP_EFFICIENCY} hint="Зазвичай 0.85–0.95">
             <NumberInput
               value={home.efficiency}
               min={0.5}
@@ -99,7 +100,7 @@ export function SystemForm({
               onChange={(v) => onChange({ efficiency: v ?? 0.9 })}
             />
           </Field>
-          <Field label="Максимальна потужність інвертора" hint="Для попереджень про перевантаження">
+          <Field label="Максимальна потужність інвертора" info={TIP_MAX_W} hint="Для попереджень про перевантаження">
             <NumberInput
               value={home.inverterMaxW}
               min={0}

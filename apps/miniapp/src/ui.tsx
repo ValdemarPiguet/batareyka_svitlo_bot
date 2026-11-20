@@ -1,5 +1,7 @@
-import { ChevronDown } from 'lucide-react';
-import type { ReactNode } from 'react';
+import { ChevronDown, Info, X, type LucideIcon } from 'lucide-react';
+import { useEffect, useState, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
+import { haptic, tg } from './lib/telegram';
 
 export const Card = ({ children, className = '', tint }: { children: ReactNode; className?: string; tint?: string }) => (
   <div
@@ -40,9 +42,22 @@ export const Button = ({
   );
 };
 
-export const Field = ({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) => (
+export const Field = ({
+  label,
+  hint,
+  info,
+  children,
+}: {
+  label: string;
+  hint?: string;
+  info?: SheetContent;
+  children: ReactNode;
+}) => (
   <label className="block">
-    <span className="mb-1.5 block px-1 text-[13px] font-medium text-hint">{label}</span>
+    <span className="mb-1.5 flex items-center gap-1 px-1 text-[13px] font-medium text-hint">
+      {label}
+      {info && <InfoButton content={info} />}
+    </span>
     {children}
     {hint && <span className="mt-1.5 block px-1 text-xs text-hint">{hint}</span>}
   </label>
@@ -171,3 +186,107 @@ export const Spinner = () => (
     <div className="h-8 w-8 animate-spin rounded-full border-2 border-hint/30 border-t-accent" />
   </div>
 );
+
+/* ---------- Нижня картка-підказка (як у Telegram Wallet) ---------- */
+
+export interface SheetContent {
+  icon: LucideIcon;
+  /** Колір великої іконки зверху. */
+  color?: string;
+  title: string;
+  items?: Array<{ icon: LucideIcon; title: string; text: string }>;
+  text?: string;
+  button?: string;
+}
+
+export function Sheet({ open, onClose, content }: { open: boolean; onClose: () => void; content: SheetContent }) {
+  const [shown, setShown] = useState(open);
+  useEffect(() => {
+    if (open) setShown(true);
+  }, [open]);
+  useEffect(() => {
+    const back = tg?.BackButton;
+    if (!open || !back) return;
+    back.show();
+    back.onClick(onClose);
+    return () => {
+      back.offClick(onClose);
+      back.hide();
+    };
+  }, [open, onClose]);
+  if (!shown) return null;
+  const Icon = content.icon;
+  return createPortal(
+    <div
+      className={`fixed inset-0 z-50 flex items-end justify-center ${open ? 'sheet-in' : 'sheet-out'}`}
+      onAnimationEnd={() => !open && setShown(false)}
+    >
+      <div className="sheet-backdrop absolute inset-0 bg-black/40" onClick={onClose} />
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={content.title}
+        className="sheet-panel relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-t-[28px] bg-[var(--card-bg)] px-6 pt-6 pb-[max(20px,env(safe-area-inset-bottom))]"
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Закрити"
+          className="absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-[var(--fill)] text-hint"
+        >
+          <X size={20} />
+        </button>
+        <div className="mt-4 mb-5 flex justify-center">
+          <div
+            className="flex h-20 w-20 items-center justify-center rounded-[26px]"
+            style={{ background: `color-mix(in srgb, ${content.color ?? 'var(--color-accent)'} 16%, transparent)`, color: content.color ?? 'var(--color-accent)' }}
+          >
+            <Icon size={44} strokeWidth={1.8} />
+          </div>
+        </div>
+        <h2 className="mx-auto mb-5 max-w-xs text-center text-[24px] leading-tight font-bold tracking-tight">{content.title}</h2>
+        {content.text && <p className="mb-5 text-center text-[16px] text-hint">{content.text}</p>}
+        {content.items && (
+          <ul className="mb-6 space-y-5">
+            {content.items.map((it) => (
+              <li key={it.title} className="flex gap-4">
+                <it.icon size={26} className="mt-0.5 shrink-0 text-accent" />
+                <div>
+                  <p className="text-[17px] font-semibold">{it.title}</p>
+                  <p className="text-[15px] leading-snug text-hint">{it.text}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+        <Button className="w-full rounded-full" onClick={onClose}>
+          {content.button ?? 'Зрозуміло'}
+        </Button>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
+/** Маленька кнопка «i», що відкриває підказку. */
+export function InfoButton({ content, size = 16 }: { content: SheetContent; size?: number }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <button
+        type="button"
+        aria-label={`Що таке: ${content.title}`}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          haptic();
+          setOpen(true);
+        }}
+        className="inline-flex h-6 w-6 items-center justify-center rounded-full text-hint active:opacity-60"
+      >
+        <Info size={size} />
+      </button>
+      <Sheet open={open} onClose={() => setOpen(false)} content={content} />
+    </>
+  );
+}

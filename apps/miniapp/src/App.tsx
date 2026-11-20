@@ -53,7 +53,7 @@ export function App() {
       {tab === 'devices' && <Devices devices={data.devices} onChange={(devices) => setData({ ...data, devices })} />}
       {tab === 'settings' && <Settings home={data.home} onSaved={(home) => setData({ ...data, home })} />}
       <nav className="fixed inset-x-0 bottom-0 px-4 pb-[max(12px,env(safe-area-inset-bottom))]">
-        <div className="nav-glass mx-auto flex max-w-md rounded-full p-1.5">
+        <div className="nav-glass mx-auto flex w-fit gap-1 rounded-full p-1.5">
           {TABS.map((t) => (
             <button
               key={t.id}
@@ -61,7 +61,7 @@ export function App() {
                 haptic();
                 setTab(t.id);
               }}
-              className={`flex min-h-13 flex-1 flex-col items-center justify-center gap-0.5 rounded-full text-[12px] font-medium transition duration-200 ${
+              className={`flex min-h-13 min-w-[88px] flex-col px-3 items-center justify-center gap-0.5 rounded-full text-[12px] font-medium transition duration-200 ${
                 tab === t.id ? 'bg-[var(--pill-active)] text-link' : 'text-fg'
               }`}
             >

@@ -111,10 +111,10 @@ export function SocArc({ value, onChange, minPct }: { value: number | null; onCh
               onChange(digits === '' ? null : Math.min(100, Number(digits)));
             }}
             onFocus={(e) => e.target.select()}
-            style={{ width: `${Math.max(1, String(value ?? '').length) * 0.6}em`, fontSize: 52 }}
+            style={{ width: `calc(${Math.max(1, String(value ?? '').length)}ch + 0.06em)`, fontSize: 52, fontVariantNumeric: 'tabular-nums' }}
             className="bg-transparent p-0 text-right leading-none outline-none placeholder:text-hint"
           />
-          <span className="ml-1 text-[28px] leading-none text-hint">%</span>
+          <span className="ml-0.5 text-[28px] leading-none text-hint">%</span>
         </label>
         <span className="text-[13px] font-medium text-hint">Заряд батареї</span>
         {low && <span className="mt-1 text-[13px] text-danger">нижче мінімуму</span>}

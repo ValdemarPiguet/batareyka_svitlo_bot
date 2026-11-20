@@ -16,6 +16,7 @@ import { duration, times, wh } from '../lib/format';
 import { schedule as loadSchedule, type Schedule } from '../lib/svitlomap';
 import { haptic } from '../lib/telegram';
 import { INTRO } from '../lib/tips';
+import { SocArc } from './SocArc';
 import { Card, NumberInput, Sheet, Toggle } from '../ui';
 
 const SOC_KEY = 'batareyka.soc';
@@ -149,23 +150,7 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
         </Card>
       )}
 
-      <Card>
-        <p className="mb-2 text-sm text-hint">Заряд батареї зараз</p>
-        <div className="flex items-center gap-3">
-          <input
-            type="range"
-            min={0}
-            max={100}
-            value={soc ?? 50}
-            onChange={(e) => setSoc(Number(e.target.value))}
-            className="flex-1 accent-[var(--color-accent)]"
-            aria-label="Заряд батареї"
-          />
-          <div className="w-24 text-lg font-semibold">
-            <NumberInput value={soc} min={0} max={100} suffix="%" onChange={(v) => setSoc(v === null ? null : Math.min(100, Math.max(0, v)))} />
-          </div>
-        </div>
-      </Card>
+      <SocArc value={soc} onChange={setSoc} minPct={home.socMinPct} />
 
       <Card className="space-y-2">
         {!home.oblast || !home.subqueue ? (

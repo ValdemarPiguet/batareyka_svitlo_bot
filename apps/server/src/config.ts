@@ -15,5 +15,10 @@ const schema = z.object({
 export type Config = z.infer<typeof schema>;
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
-  return schema.parse(env);
+  const r = schema.safeParse(env);
+  if (!r.success) {
+    const names = [...new Set(r.error.issues.map((i) => i.path.join('.')))].join(', ');
+    throw new Error(`Не заданы или неверны переменные окружения: ${names}`);
+  }
+  return r.data;
 }

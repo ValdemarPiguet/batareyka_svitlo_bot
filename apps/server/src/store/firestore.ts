@@ -12,7 +12,13 @@ export class FirestoreStore implements Store {
   constructor(private readonly db: Firestore) {}
 
   static fromServiceAccountJson(json: string): FirestoreStore {
-    const app = getApps()[0] ?? initializeApp({ credential: cert(JSON.parse(json)) });
+    let account: object;
+    try {
+      account = JSON.parse(json.trim());
+    } catch {
+      throw new Error('FIREBASE_SERVICE_ACCOUNT: это не JSON. Вставьте содержимое firebase-key.json целиком, от { до }.');
+    }
+    const app = getApps()[0] ?? initializeApp({ credential: cert(account) });
     const db = getFirestore(app);
     db.settings({ ignoreUndefinedProperties: true });
     return new FirestoreStore(db);

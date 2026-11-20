@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+/* Тёмная тема — по классу .dark (ставится из темы Telegram или системы). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --color-bg: var(--tg-theme-bg-color, #f4f6fb);
+  --color-fg: var(--tg-theme-text-color, #0f1222);
+  --color-hint: var(--tg-theme-hint-color, #7b8094);
+  --color-card: var(--glass-bg);
+  --color-accent: var(--tg-theme-button-color, #2f7cf6);
+  --color-accent-fg: var(--tg-theme-button-text-color, #ffffff);
+  --color-link: var(--tg-theme-link-color, #2f7cf6);
+  --color-danger: var(--tg-theme-destructive-text-color, #e5484d);
+}
+
+:root {
+  --glass-bg: rgb(255 255 255 / 0.55);
+  --glass-strong: rgb(255 255 255 / 0.78);
+  --glass-border: rgb(255 255 255 / 0.7);
+  --glass-edge: rgb(15 18 34 / 0.06);
+  --glass-shadow: 0 8px 32px rgb(31 38 80 / 0.10), 0 1px 2px rgb(31 38 80 / 0.06);
+  --glass-highlight: inset 0 1px 0 rgb(255 255 255 / 0.9);
+  --blob-1: rgb(120 170 255 / 0.75);
+  --blob-2: rgb(255 190 120 / 0.6);
+  --blob-3: rgb(140 230 200 / 0.55);
+}
+
+.dark {
+  --tg-theme-bg-color-fallback: #0d0f17;
+  --glass-bg: rgb(255 255 255 / 0.07);
+  --glass-strong: rgb(255 255 255 / 0.14);
+  --glass-border: rgb(255 255 255 / 0.12);
+  --glass-edge: rgb(255 255 255 / 0.04);
+  --glass-shadow: 0 8px 32px rgb(0 0 0 / 0.35);
+  --glass-highlight: inset 0 1px 0 rgb(255 255 255 / 0.10);
+  --blob-1: rgb(60 110 255 / 0.35);
+  --blob-2: rgb(255 150 60 / 0.18);
+  --blob-3: rgb(40 200 160 / 0.20);
+}
+.dark:not(.tg) {
+  --tg-theme-bg-color: #0d0f17;
+  --tg-theme-text-color: #eef0f6;
+  --tg-theme-hint-color: #8a90a6;
+}
+
+html { background: var(--color-bg); }
+body { background: transparent; }
+html, body {
+  min-height: 100%;
+  color: var(--color-fg);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Мягкий цветной фон под стеклом. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(40% 35% at 15% 10%, var(--blob-1), transparent 70%),
+    radial-gradient(35% 30% at 90% 30%, var(--blob-2), transparent 70%),
+    radial-gradient(45% 40% at 40% 95%, var(--blob-3), transparent 70%);
+  filter: blur(20px);
+}
+
+@utility glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), var(--glass-highlight);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+}
+
+@utility glass-strong {
+  background: var(--glass-strong);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), var(--glass-highlight);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+}
+
+input, select { color: inherit; }
+select option { color: #111; }
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type='number'] { -moz-appearance: textfield; }
+
+input[type='range'] { accent-color: var(--color-accent); }

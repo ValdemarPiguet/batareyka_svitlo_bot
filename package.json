@@ -1,0 +1,19 @@
+{
+  "name": "batareyka",
+  "private": true,
+  "version": "0.0.0",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "test": "npm run test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "dev:server": "npm run dev -w @batareyka/server",
+    "dev:miniapp": "npm run dev -w @batareyka/miniapp",
+    "build:miniapp": "npm run build -w @batareyka/miniapp"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

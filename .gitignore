@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
+
+# Ключи Firebase
+*firebase*adminsdk*.json
+*firebase*.json
+service-account*.json

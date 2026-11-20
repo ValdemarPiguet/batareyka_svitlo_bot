@@ -107,7 +107,7 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
 
   return (
     <div className="space-y-4 p-4">
-      <h1 className="px-1 pt-2 text-[32px] leading-tight font-bold tracking-tight">Вистачить?</h1>
+      <h1 className="px-2 pt-3 pb-1 text-[28px] leading-tight font-bold tracking-tight">Вистачить?</h1>
 
       {sched?.emergency && (
         <Card tint={RED}>

@@ -98,7 +98,7 @@ export function Onboarding({ home: initial, onDone }: { home: Home; onDone: () =
         <p className="text-sm text-hint">
           Крок {step + 1} з {steps.length}
         </p>
-        <h1 className="px-1 pt-2 text-[32px] leading-tight font-bold tracking-tight">{s.title}</h1>
+        <h1 className="px-2 pt-3 pb-1 text-[28px] leading-tight font-bold tracking-tight">{s.title}</h1>
       </div>
       <Card>{s.body}</Card>
       {error && <p className="text-sm text-danger">{error}</p>}

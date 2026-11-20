@@ -4,44 +4,44 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --color-bg: var(--tg-theme-bg-color, #f4f6fb);
-  --color-fg: var(--tg-theme-text-color, #0f1222);
-  --color-hint: var(--tg-theme-hint-color, #7b8094);
-  --color-card: var(--glass-bg);
+  --color-bg: var(--page-bg);
+  --color-fg: var(--tg-theme-text-color, #000000);
+  --color-hint: var(--tg-theme-hint-color, #8e8e93);
+  --color-card: var(--card-bg);
   --color-accent: var(--tg-theme-button-color, #2f7cf6);
   --color-accent-fg: var(--tg-theme-button-text-color, #ffffff);
   --color-link: var(--tg-theme-link-color, #2f7cf6);
-  --color-danger: var(--tg-theme-destructive-text-color, #e5484d);
+  --color-danger: var(--tg-theme-destructive-text-color, #ff3b30);
 }
 
+/* Стиль Telegram Wallet: серый фон без цвета, плоские белые карточки,
+   полупрозрачное меню. Цвета берутся из темы Telegram, ниже — запасные. */
 :root {
-  --glass-bg: rgb(255 255 255 / 0.55);
-  --glass-strong: rgb(255 255 255 / 0.78);
-  --glass-border: rgb(255 255 255 / 0.7);
-  --glass-edge: rgb(15 18 34 / 0.06);
-  --glass-shadow: 0 8px 32px rgb(31 38 80 / 0.10), 0 1px 2px rgb(31 38 80 / 0.06);
-  --glass-highlight: inset 0 1px 0 rgb(255 255 255 / 0.9);
-  --blob-1: rgb(120 170 255 / 0.75);
-  --blob-2: rgb(255 190 120 / 0.6);
-  --blob-3: rgb(140 230 200 / 0.55);
+  --page-bg: var(--tg-theme-secondary-bg-color, #efeff4);
+  --card-bg: var(--tg-theme-section-bg-color, var(--tg-theme-bg-color, #ffffff));
+  --fill: rgb(118 118 128 / 0.12);
+  --divider: rgb(60 60 67 / 0.12);
+  --nav-bg: rgb(255 255 255 / 0.72);
+  --nav-shadow: 0 6px 24px rgb(0 0 0 / 0.10), 0 0 0 0.5px rgb(0 0 0 / 0.06);
+  --pill-active: rgb(118 118 128 / 0.12);
+  /* старые имена, которые используются в разметке */
+  --glass-bg: var(--card-bg);
+  --glass-strong: var(--fill);
+  --glass-edge: var(--divider);
 }
 
 .dark {
-  --tg-theme-bg-color-fallback: #0d0f17;
-  --glass-bg: rgb(255 255 255 / 0.07);
-  --glass-strong: rgb(255 255 255 / 0.14);
-  --glass-border: rgb(255 255 255 / 0.12);
-  --glass-edge: rgb(255 255 255 / 0.04);
-  --glass-shadow: 0 8px 32px rgb(0 0 0 / 0.35);
-  --glass-highlight: inset 0 1px 0 rgb(255 255 255 / 0.10);
-  --blob-1: rgb(60 110 255 / 0.35);
-  --blob-2: rgb(255 150 60 / 0.18);
-  --blob-3: rgb(40 200 160 / 0.20);
+  --page-bg: var(--tg-theme-secondary-bg-color, #000000);
+  --card-bg: var(--tg-theme-section-bg-color, #1c1c1e);
+  --fill: rgb(118 118 128 / 0.24);
+  --divider: rgb(84 84 88 / 0.5);
+  --nav-bg: rgb(44 44 46 / 0.72);
+  --nav-shadow: 0 6px 24px rgb(0 0 0 / 0.5), 0 0 0 0.5px rgb(255 255 255 / 0.08);
+  --pill-active: rgb(255 255 255 / 0.10);
 }
 .dark:not(.tg) {
-  --tg-theme-bg-color: #0d0f17;
-  --tg-theme-text-color: #eef0f6;
-  --tg-theme-hint-color: #8a90a6;
+  --tg-theme-text-color: #ffffff;
+  --tg-theme-hint-color: #8e8e93;
 }
 
 html { background: var(--color-bg); }
@@ -60,38 +60,27 @@ html, body {
   color: var(--color-fg);
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
-}
-
-/* Мягкий цветной фон под стеклом. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(40% 35% at 15% 10%, var(--blob-1), transparent 70%),
-    radial-gradient(35% 30% at 90% 30%, var(--blob-2), transparent 70%),
-    radial-gradient(45% 40% at 40% 95%, var(--blob-3), transparent 70%);
-  background-size: 160% 160%;
-  background-position: center;
+  /* Как в Telegram Wallet: SF Pro на iPhone и Mac, Roboto на Android. */
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, Roboto, 'Segoe UI', sans-serif;
+  letter-spacing: -0.01em;
 }
 
 @utility glass {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow), var(--glass-highlight);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  background: var(--card-bg);
 }
 
-@utility glass-strong {
-  background: var(--glass-strong);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow), var(--glass-highlight);
-  backdrop-filter: blur(30px) saturate(200%);
-  -webkit-backdrop-filter: blur(30px) saturate(200%);
+/* Полупрозрачное меню снизу. */
+@utility nav-glass {
+  background: var(--nav-bg);
+  box-shadow: var(--nav-shadow);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Выбранный сегмент переключателя. */
+@utility pill-active {
+  background: var(--card-bg);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.12), 0 0 0 0.5px rgb(0 0 0 / 0.04);
 }
 
 input, select { color: inherit; }

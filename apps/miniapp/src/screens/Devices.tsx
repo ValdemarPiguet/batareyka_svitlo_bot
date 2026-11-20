@@ -84,7 +84,7 @@ export function Devices({ devices, onChange }: { devices: Device[]; onChange: (d
   if (catalog) {
     return (
       <div className="space-y-3 p-4">
-        <h1 className="px-1 pt-2 text-[32px] leading-tight font-bold tracking-tight">Додати прилад</h1>
+        <h1 className="px-2 pt-3 pb-1 text-[28px] leading-tight font-bold tracking-tight">Додати прилад</h1>
         <Card className="divide-y divide-[var(--glass-edge)] p-0">
           {templates.map((t) => (
             <button
@@ -118,7 +118,7 @@ export function Devices({ devices, onChange }: { devices: Device[]; onChange: (d
 
   return (
     <div className="space-y-4 p-4">
-      <h1 className="px-1 pt-2 text-[32px] leading-tight font-bold tracking-tight">Прилади</h1>
+      <h1 className="px-2 pt-3 pb-1 text-[28px] leading-tight font-bold tracking-tight">Прилади</h1>
       {error && <p className="text-sm text-danger">{error}</p>}
       {PRIORITIES.map((p) => {
         const list = devices.filter((d) => d.priority === p).sort((a, b) => a.order - b.order);
@@ -179,7 +179,7 @@ function DeviceEditor({
 
   return (
     <div className="space-y-4 p-4">
-      <h1 className="px-1 pt-2 text-[32px] leading-tight font-bold tracking-tight">{isNew ? 'Новий прилад' : d.name}</h1>
+      <h1 className="px-2 pt-3 pb-1 text-[28px] leading-tight font-bold tracking-tight">{isNew ? 'Новий прилад' : d.name}</h1>
       <Card className="space-y-4">
         <Field label="Назва">
           <TextInput value={d.name} onChange={(name) => set({ name })} />

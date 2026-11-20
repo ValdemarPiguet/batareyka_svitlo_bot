@@ -3,8 +3,8 @@ import type { ReactNode } from 'react';
 
 export const Card = ({ children, className = '', tint }: { children: ReactNode; className?: string; tint?: string }) => (
   <div
-    className={`glass rounded-3xl ${/(^|\s)p-\d/.test(className) ? '' : 'p-4'} ${className}`}
-    style={tint ? { background: `linear-gradient(135deg, ${tint}, var(--glass-bg) 85%)` } : undefined}
+    className={`glass rounded-[22px] ${/(^|\s)p-\d/.test(className) ? '' : 'p-4'} ${className}`}
+    style={tint ? { background: `linear-gradient(135deg, ${tint}, var(--card-bg) 90%)` } : undefined}
   >
     {children}
   </div>
@@ -24,8 +24,7 @@ export const Button = ({
   className?: string;
 }) => {
   const styles = {
-    primary:
-      'bg-accent text-accent-fg shadow-[0_6px_20px_-6px_var(--color-accent),inset_0_1px_0_rgb(255_255_255/0.35)]',
+    primary: 'bg-accent text-accent-fg',
     ghost: 'glass text-link',
     danger: 'glass text-danger',
   }[kind];
@@ -34,7 +33,7 @@ export const Button = ({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={`min-h-12 rounded-full px-5 font-medium transition duration-200 active:scale-[0.97] disabled:opacity-40 disabled:shadow-none ${styles} ${className}`}
+      className={`min-h-[50px] rounded-2xl px-5 text-[17px] font-semibold transition duration-200 active:scale-[0.97] disabled:opacity-40 disabled:shadow-none ${styles} ${className}`}
     >
       {children}
     </button>
@@ -50,7 +49,7 @@ export const Field = ({ label, hint, children }: { label: string; hint?: string;
 );
 
 const inputCls =
-  'min-h-12 w-full rounded-2xl border border-[var(--glass-edge)] bg-[var(--glass-strong)] px-4 outline-none transition placeholder:text-hint focus:border-accent focus:ring-4 focus:ring-accent/15';
+  'min-h-12 w-full rounded-xl border border-transparent bg-[var(--fill)] px-4 outline-none transition placeholder:text-hint focus:border-accent';
 
 export const NumberInput = ({
   value,
@@ -127,14 +126,14 @@ export function Segmented<T extends string | number>({
   onChange: (v: T) => void;
 }) {
   return (
-    <div className="flex rounded-full border border-[var(--glass-edge)] bg-[var(--glass-bg)] p-1">
+    <div className="flex rounded-[10px] bg-[var(--fill)] p-0.5">
       {options.map((o) => (
         <button
           key={String(o.value)}
           type="button"
           onClick={() => onChange(o.value)}
-          className={`min-h-10 flex-1 rounded-full px-2 text-sm leading-tight transition duration-200 ${
-            o.value === value ? 'glass-strong font-semibold' : 'border border-transparent text-hint'
+          className={`min-h-9 flex-1 rounded-[8px] px-2 text-[14px] leading-tight transition duration-200 ${
+            o.value === value ? 'pill-active font-semibold' : 'text-fg/70'
           }`}
         >
           {o.label}
@@ -152,7 +151,7 @@ export const Toggle = ({ on, onChange, label }: { on: boolean; onChange: (v: boo
     aria-label={label}
     onClick={() => onChange(!on)}
     className={`relative h-[30px] w-[52px] shrink-0 rounded-full transition duration-200 ${
-      on ? 'bg-accent' : 'bg-[var(--glass-strong)] ring-1 ring-[var(--glass-edge)] ring-inset'
+      on ? 'bg-[#34c759]' : 'bg-[var(--fill)]'
     }`}
   >
     <span
@@ -164,7 +163,7 @@ export const Toggle = ({ on, onChange, label }: { on: boolean; onChange: (v: boo
 );
 
 export const SectionTitle = ({ children }: { children: ReactNode }) => (
-  <h2 className="mb-2 px-2 text-[13px] font-semibold tracking-wide text-hint uppercase">{children}</h2>
+  <h2 className="mb-2 px-4 text-[20px] font-semibold tracking-tight text-fg/80">{children}</h2>
 );
 
 export const Spinner = () => (

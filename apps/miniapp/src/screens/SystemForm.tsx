@@ -52,7 +52,7 @@ export function SystemForm({
                 <NumberInput value={ah} min={0} suffix="А·год" onChange={(a) => setAhV(a, volt)} />
               </div>
               <select
-                className="min-h-12 rounded-2xl border border-[var(--glass-edge)] bg-[var(--glass-strong)] px-4"
+                className="min-h-12 rounded-xl bg-[var(--fill)] px-4"
                 value={volt}
                 onChange={(e) => setAhV(ah, Number(e.target.value))}
               >

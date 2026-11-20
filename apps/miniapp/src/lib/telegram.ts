@@ -3,6 +3,8 @@ interface TgWebApp {
   initDataUnsafe: { user?: { id: number; first_name?: string } };
   colorScheme: 'light' | 'dark';
   ready(): void;
+  disableVerticalSwipes?(): void;
+  isVersionAtLeast?(v: string): boolean;
   onEvent?(event: 'themeChanged', cb: () => void): void;
   expand(): void;
   HapticFeedback?: { impactOccurred(style: 'light' | 'medium'): void; selectionChanged(): void };
@@ -30,6 +32,8 @@ export function initTelegram() {
   tg.onEvent?.('themeChanged', applyScheme);
   tg.ready();
   tg.expand();
+  // Свайп вниз по списку не должен закрывать Mini App.
+  if (tg.isVersionAtLeast?.('7.7')) tg.disableVerticalSwipes?.();
 }
 
 export const initData = (): string => tg?.initData || import.meta.env.VITE_DEV_INIT_DATA || '';

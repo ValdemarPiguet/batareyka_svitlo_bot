@@ -46,6 +46,15 @@
 
 html { background: var(--color-bg); }
 body { background: transparent; }
+/* Экран закреплён по горизонтали: без сдвига влево-вправо и без «резинки». */
+html, body, #root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+}
+body { touch-action: pan-y; }
+input, select, textarea { font-size: 16px; } /* iOS не зумит поле при фокусе */
 html, body {
   min-height: 100%;
   color: var(--color-fg);
@@ -58,14 +67,15 @@ html, body {
 body::before {
   content: '';
   position: fixed;
-  inset: -20%;
+  inset: 0;
   z-index: -1;
   pointer-events: none;
   background:
     radial-gradient(40% 35% at 15% 10%, var(--blob-1), transparent 70%),
     radial-gradient(35% 30% at 90% 30%, var(--blob-2), transparent 70%),
     radial-gradient(45% 40% at 40% 95%, var(--blob-3), transparent 70%);
-  filter: blur(20px);
+  background-size: 160% 160%;
+  background-position: center;
 }
 
 @utility glass {

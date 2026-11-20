@@ -1,4 +1,5 @@
 import type { Device } from '@batareyka/calc';
+import { BatteryCharging, PlugZap, SlidersHorizontal, type LucideIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { api, ApiError, type Home } from './lib/api';
 import { haptic, tg } from './lib/telegram';
@@ -9,10 +10,10 @@ import { Settings } from './screens/Settings';
 import { Button, Spinner } from './ui';
 
 type Tab = 'check' | 'devices' | 'settings';
-const TABS: Array<{ id: Tab; icon: string; label: string }> = [
-  { id: 'check', icon: '🔋', label: 'Вистачить?' },
-  { id: 'devices', icon: '🔌', label: 'Прилади' },
-  { id: 'settings', icon: '⚙️', label: 'Налаштування' },
+const TABS: Array<{ id: Tab; icon: LucideIcon; label: string }> = [
+  { id: 'check', icon: BatteryCharging, label: 'Вистачить?' },
+  { id: 'devices', icon: PlugZap, label: 'Прилади' },
+  { id: 'settings', icon: SlidersHorizontal, label: 'Налаштування' },
 ];
 
 export function App() {
@@ -64,7 +65,7 @@ export function App() {
                 tab === t.id ? 'bg-[var(--glass-strong)] text-link shadow-sm' : 'text-hint'
               }`}
             >
-              <span className="text-lg leading-none">{t.icon}</span>
+              <t.icon size={22} strokeWidth={tab === t.id ? 2.2 : 1.8} aria-hidden />
               {t.label}
             </button>
           ))}

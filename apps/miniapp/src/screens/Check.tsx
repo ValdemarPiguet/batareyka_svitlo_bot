@@ -9,6 +9,7 @@ import {
   type Interval,
   type SystemProfile,
 } from '@batareyka/calc';
+import { AlertTriangle, Check as CheckIcon, CircleCheck, CircleX, Lightbulb, Minus, Siren, Unplug, X, Zap } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { api, type Home } from '../lib/api';
 import { duration, times, wh } from '../lib/format';
@@ -34,9 +35,9 @@ const writeSoc = (v: number) => {
 };
 
 const VERDICT = {
-  ok: { icon: '✅', text: 'Вистачить', cls: 'text-emerald-700 dark:text-emerald-300', tint: 'rgb(16 185 129 / 0.22)' },
-  tight: { icon: '⚠️', text: 'Впритик', cls: 'text-amber-700 dark:text-amber-300', tint: 'rgb(245 158 11 / 0.24)' },
-  no: { icon: '❌', text: 'Не вистачить', cls: 'text-red-700 dark:text-red-300', tint: 'rgb(239 68 68 / 0.22)' },
+  ok: { icon: CircleCheck, text: 'Вистачить', cls: 'text-emerald-700 dark:text-emerald-300', tint: 'rgb(16 185 129 / 0.22)' },
+  tight: { icon: AlertTriangle, text: 'Впритик', cls: 'text-amber-700 dark:text-amber-300', tint: 'rgb(245 158 11 / 0.24)' },
+  no: { icon: CircleX, text: 'Не вистачить', cls: 'text-red-700 dark:text-red-300', tint: 'rgb(239 68 68 / 0.22)' },
 } as const;
 const AMBER = 'rgb(245 158 11 / 0.22)';
 const RED = 'rgb(239 68 68 / 0.22)';
@@ -110,7 +111,7 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
 
       {sched?.emergency && (
         <Card tint={RED}>
-          <p className="font-medium">🚨 Екстрені відключення в області</p>
+          <p className="flex items-center gap-2 font-medium"><Siren size={18} /> Екстрені відключення в області</p>
           <p className="text-sm">Графік може не діяти. Вкажіть, коли чекаєте світло, вручну нижче.</p>
         </Card>
       )}
@@ -146,15 +147,17 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
         ) : !sched ? (
           <p className="text-sm text-hint">Завантажую графік…</p>
         ) : outageNow ? (
-          <p>
-            🔌 Зараз відключення, світло о <b>{kyivTime(window.end)}</b> (ще {duration((window.end - now) / 60_000)})
+          <p className="flex items-start gap-2">
+            <Unplug size={18} className="mt-0.5 shrink-0" />
+            <span>Зараз відключення, світло о <b>{kyivTime(window.end)}</b> (ще {duration((window.end - now) / 60_000)})</span>
           </p>
         ) : window ? (
-          <p>
-            💡 Світло є. Наступне відключення <b>{kyivTime(window.start)}–{kyivTime(window.end)}</b>
+          <p className="flex items-start gap-2">
+            <Lightbulb size={18} className="mt-0.5 shrink-0" />
+            <span>Світло є. Наступне відключення <b>{kyivTime(window.start)}–{kyivTime(window.end)}</b></span>
           </p>
         ) : (
-          <p>💡 Відключень за графіком попереду немає</p>
+          <p className="flex items-center gap-2"><Lightbulb size={18} /> Відключень за графіком попереду немає</p>
         )}
         {manual ? (
           <div className="flex items-center gap-2 text-sm">
@@ -165,12 +168,12 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
             <div className="w-20">
               <NumberInput value={manual.m} min={0} max={59} suffix="хв" onChange={(m) => setManual({ ...manual, m })} />
             </div>
-            <button className="text-link" onClick={() => setManual(null)}>
-              ✕
+            <button className="p-1 text-link" aria-label="Скасувати" onClick={() => setManual(null)}>
+              <X size={18} />
             </button>
           </div>
         ) : (
-          <button className="text-sm text-link" onClick={() => setManual({ h: null, m: null })}>
+          <button className="text-left text-sm text-link" onClick={() => setManual({ h: null, m: null })}>
             Світло дадуть не за графіком? Вказати вручну
           </button>
         )}
@@ -182,8 +185,12 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
       {plan && (
         <>
           <Card className={`p-5 ${VERDICT[plan.verdict].cls}`} tint={VERDICT[plan.verdict].tint}>
-            <p className="text-[26px] font-bold tracking-tight">
-              {VERDICT[plan.verdict].icon} {VERDICT[plan.verdict].text}
+            <p className="flex items-center gap-2 text-[26px] font-bold tracking-tight">
+              {(() => {
+                const Icon = VERDICT[plan.verdict].icon;
+                return <Icon size={28} strokeWidth={2.2} aria-hidden />;
+              })()}
+              {VERDICT[plan.verdict].text}
             </p>
             <p className="mt-1 text-sm">
               {plan.verdict === 'no'
@@ -213,7 +220,9 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
                 const off = plan.devicesOff.includes(d.id);
                 return (
                   <div key={d.id} className="flex items-center gap-3 px-4 py-3">
-                    <span className="w-5 text-center">{!enabled ? '·' : on ? '✓' : '✕'}</span>
+                    <span className={`flex w-5 justify-center ${!enabled ? 'text-hint' : on ? 'text-emerald-600 dark:text-emerald-400' : 'text-danger'}`}>
+                      {!enabled ? <Minus size={16} /> : on ? <CheckIcon size={18} strokeWidth={2.5} /> : <X size={18} strokeWidth={2.5} />}
+                    </span>
                     <div className="min-w-0 flex-1">
                       <div className={`truncate ${!enabled ? 'text-hint' : ''}`}>{d.name}</div>
                       <div className={`text-xs ${off ? 'text-danger' : 'text-hint'}`}>
@@ -240,13 +249,15 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
           )}
 
           {plan.peakWarnings.map((w) => (
-            <Card key={w.deviceIds.join()} className="text-sm" tint={AMBER}>
-              ⚡{' '}
+            <Card key={w.deviceIds.join()} className="flex items-start gap-2 text-sm" tint={AMBER}>
+              <Zap size={18} className="mt-0.5 shrink-0 text-amber-600 dark:text-amber-400" aria-hidden />
+              <span>
               {w.kind === 'pair'
                 ? `Не вмикайте ${w.deviceIds.map(name).join(' і ')} одночасно: пік ${w.totalPeakW} Вт більше за ${w.inverterMaxW} Вт інвертора.`
                 : w.kind === 'single'
                   ? `${name(w.deviceIds[0]!)} — тільки коли решта не на піку (${w.totalPeakW} Вт > ${w.inverterMaxW} Вт).`
                   : `Сумарний пік приладів ${w.totalPeakW} Вт більше за інвертор (${w.inverterMaxW} Вт).`}
+              </span>
             </Card>
           ))}
 

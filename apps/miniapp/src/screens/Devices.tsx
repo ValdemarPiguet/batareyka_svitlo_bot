@@ -1,4 +1,5 @@
 import type { Device, DeviceMode, DeviceTemplate, Priority } from '@batareyka/calc';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { api, type NewDevice } from '../lib/api';
 import { MODE_LABEL, PRIORITY_LABEL, SOURCE_LABEL } from '../lib/format';
@@ -135,11 +136,11 @@ export function Devices({ devices, onChange }: { devices: Device[]; onChange: (d
                     </div>
                   </button>
                   <div className="flex flex-col">
-                    <button aria-label="Вище" className="px-2 text-hint disabled:opacity-20" disabled={p === 1} onClick={() => move(d, -1)}>
-                      ▲
+                    <button aria-label="Вище" className="flex h-6 w-8 items-center justify-center text-hint disabled:opacity-20" disabled={p === 1} onClick={() => move(d, -1)}>
+                      <ChevronUp size={18} />
                     </button>
-                    <button aria-label="Нижче" className="px-2 text-hint disabled:opacity-20" disabled={p === 3} onClick={() => move(d, 1)}>
-                      ▼
+                    <button aria-label="Нижче" className="flex h-6 w-8 items-center justify-center text-hint disabled:opacity-20" disabled={p === 3} onClick={() => move(d, 1)}>
+                      <ChevronDown size={18} />
                     </button>
                   </div>
                   <Toggle label={`Увімкнено: ${d.name}`} on={d.enabled} onChange={(enabled) => update(d, { enabled })} />
@@ -153,7 +154,7 @@ export function Devices({ devices, onChange }: { devices: Device[]; onChange: (d
         Додати прилад
       </Button>
       <p className="px-1 text-xs text-hint">
-        ▲▼ переносять прилад між групами. Вимкнені прилади не враховуються в плані.
+        Стрілки переносять прилад між групами. Вимкнені прилади не враховуються в плані.
       </p>
     </div>
   );

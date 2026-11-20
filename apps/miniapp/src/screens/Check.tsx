@@ -1,15 +1,18 @@
 import {
+  availableEnergyWh,
   buildPlan,
+  DEFAULT_SAFETY_FACTOR,
   kyivTime,
   loadW,
   outageWindow,
   parseScheduleDays,
   requiredSocPct,
+  runtimeHours,
   type Device,
   type Interval,
   type SystemProfile,
 } from '@batareyka/calc';
-import { AlertTriangle, Check as CheckIcon, CircleCheck, CircleX, Info, Lightbulb, Minus, Siren, Unplug, X, Zap } from 'lucide-react';
+import { AlertTriangle, BatteryMedium, Check as CheckIcon, CircleCheck, CircleX, Info, Lightbulb, Minus, Siren, Unplug, X, Zap } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api, type Home } from '../lib/api';
 import { duration, times, wh } from '../lib/format';
@@ -118,12 +121,42 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
   const plan = soc !== null && minutes > 0 ? buildPlan({ profile, devices: effective, socPct: soc, minutesUntilPowerOn: minutes }) : null;
   const name = (id: string) => devices.find((d) => d.id === id)?.name ?? id;
   const wanted = effective.filter((d) => d.enabled && d.mode !== 'perUse');
+  // Відключень немає: показуємо, на скільки вистачить, якщо світло зникне зараз.
+  const runtimeNow =
+    soc !== null && !plan ? runtimeHours(availableEnergyWh(profile, soc), loadW(profile, wanted)) / DEFAULT_SAFETY_FACTOR : null;
   const needAllPct = minutes > 0 ? Math.ceil(requiredSocPct(profile, loadW(profile, wanted), minutes / 60)) : null;
 
   const toggle = (id: string, on: boolean) => {
     haptic();
     setOverrides((o) => ({ ...o, [id]: on }));
   };
+
+  const deviceList = (
+    <Card className="divide-y divide-[var(--glass-edge)] p-0">
+      {devices
+        .filter((d) => d.mode !== 'perUse')
+        .sort((a, b) => a.priority - b.priority || a.order - b.order)
+        .map((d) => {
+          const enabled = effective.find((x) => x.id === d.id)!.enabled;
+          const on = !plan || plan.devicesOn.includes(d.id);
+          const off = !!plan && plan.devicesOff.includes(d.id);
+          return (
+            <div key={d.id} className="flex items-center gap-3 px-4 py-3">
+              {plan && (
+                <span className={`flex w-5 justify-center ${!enabled ? 'text-hint' : on ? 'text-emerald-600 dark:text-emerald-400' : 'text-danger'}`}>
+                  {!enabled ? <Minus size={16} /> : on ? <CheckIcon size={18} strokeWidth={2.5} /> : <X size={18} strokeWidth={2.5} />}
+                </span>
+              )}
+              <div className="min-w-0 flex-1">
+                <div className={`truncate ${!enabled ? 'text-hint' : ''}`}>{d.name}</div>
+                <div className={`text-xs ${off ? 'text-danger' : 'text-hint'}`}>{off ? 'Вимкніть' : `${d.avgW} Вт`}</div>
+              </div>
+              <Toggle label={d.name} on={enabled} onChange={(v) => toggle(d.id, v)} />
+            </div>
+          );
+        })}
+    </Card>
+  );
 
   return (
     <div className="space-y-4 p-4">
@@ -200,6 +233,22 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
 
       {soc === null && <p className="px-1 text-hint">Введіть заряд, щоб побачити план.</p>}
 
+      {runtimeNow !== null && (
+        <>
+          <Card className="p-5">
+            <p className="flex items-center gap-2 text-[22px] font-bold tracking-tight">
+              <BatteryMedium size={26} className="text-accent" aria-hidden />
+              {Number.isFinite(runtimeNow) ? `Вистачить на ${duration(Math.floor(runtimeNow * 60))}` : 'Вистачить надовго'}
+            </p>
+            <p className="mt-1 text-sm text-hint">
+              Якщо світло зникне зараз і працюватимуть увімкнені прилади ({loadW(profile, wanted)} Вт разом з інвертором).
+              Коли в графіку зʼявиться відключення, тут буде план.
+            </p>
+          </Card>
+          {deviceList}
+        </>
+      )}
+
       {plan && (
         <>
           <Card className={`p-5 ${VERDICT[plan.verdict].cls}`} tint={VERDICT[plan.verdict].tint}>
@@ -228,30 +277,7 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
             </p>
           </Card>
 
-          <Card className="divide-y divide-[var(--glass-edge)] p-0">
-            {devices
-              .filter((d) => d.mode !== 'perUse')
-              .sort((a, b) => a.priority - b.priority || a.order - b.order)
-              .map((d) => {
-                const enabled = effective.find((x) => x.id === d.id)!.enabled;
-                const on = plan.devicesOn.includes(d.id);
-                const off = plan.devicesOff.includes(d.id);
-                return (
-                  <div key={d.id} className="flex items-center gap-3 px-4 py-3">
-                    <span className={`flex w-5 justify-center ${!enabled ? 'text-hint' : on ? 'text-emerald-600 dark:text-emerald-400' : 'text-danger'}`}>
-                      {!enabled ? <Minus size={16} /> : on ? <CheckIcon size={18} strokeWidth={2.5} /> : <X size={18} strokeWidth={2.5} />}
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <div className={`truncate ${!enabled ? 'text-hint' : ''}`}>{d.name}</div>
-                      <div className={`text-xs ${off ? 'text-danger' : 'text-hint'}`}>
-                        {off ? 'Вимкніть' : `${d.avgW} Вт`}
-                      </div>
-                    </div>
-                    <Toggle label={d.name} on={enabled} onChange={(v) => toggle(d.id, v)} />
-                  </div>
-                );
-              })}
-          </Card>
+          {deviceList}
 
           {Object.entries(plan.extraUses).some(([, n]) => n > 0) && (
             <Card>

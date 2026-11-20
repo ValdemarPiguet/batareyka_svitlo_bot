@@ -1,5 +1,5 @@
 import type { Device } from '@batareyka/calc';
-import { BatteryCharging, PlugZap, SlidersHorizontal, type LucideIcon } from 'lucide-react';
+import { BatteryCharging, PlugZap, UserRound, type LucideIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { api, ApiError, type Home } from './lib/api';
 import { haptic, tg } from './lib/telegram';
@@ -13,7 +13,7 @@ type Tab = 'check' | 'devices' | 'settings';
 const TABS: Array<{ id: Tab; icon: LucideIcon; label: string }> = [
   { id: 'check', icon: BatteryCharging, label: 'Вистачить?' },
   { id: 'devices', icon: PlugZap, label: 'Прилади' },
-  { id: 'settings', icon: SlidersHorizontal, label: 'Налаштування' },
+  { id: 'settings', icon: UserRound, label: 'Профіль' },
 ];
 
 export function App() {
@@ -61,7 +61,7 @@ export function App() {
                 haptic();
                 setTab(t.id);
               }}
-              className={`flex min-h-13 min-w-[88px] flex-col px-3 items-center justify-center gap-0.5 rounded-full text-[12px] font-medium transition duration-200 ${
+              className={`flex min-h-13 w-[88px] flex-col items-center justify-center gap-0.5 rounded-full text-[12px] font-medium transition duration-200 ${
                 tab === t.id ? 'bg-[var(--pill-active)] text-link' : 'text-fg'
               }`}
             >

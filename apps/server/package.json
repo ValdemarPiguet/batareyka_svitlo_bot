@@ -24,5 +24,9 @@
     "@types/supertest": "^6.0.3",
     "typescript": "^5.9.3",
     "vitest": "^3.2.4"
+  },
+  "exports": {
+    "./app": "./src/app.ts",
+    "./config": "./src/config.ts"
   }
 }

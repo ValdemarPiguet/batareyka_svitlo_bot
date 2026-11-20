@@ -1,4 +1,4 @@
-import type { Chemistry, Device, SystemProfile } from './types';
+import type { Chemistry, Device, SystemProfile } from './types.js';
 
 export const DEFAULT_EFFICIENCY = 0.9;
 export const DEFAULT_IDLE_W = 40;

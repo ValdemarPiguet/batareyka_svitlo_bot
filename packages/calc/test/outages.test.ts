@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { minutesUntilPowerOn, outageWindow } from '../src';
+import { minutesUntilPowerOn, outageWindow } from '../src/index.js';
 
 const H = 3_600_000;
 const t0 = Date.UTC(2026, 10, 20, 12, 0);

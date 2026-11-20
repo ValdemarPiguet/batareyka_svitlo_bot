@@ -22,6 +22,4 @@ npm run dev:miniapp     # в другом, http://localhost:5173
 и кнопку Mini App в @BotFather.
 
 ## Vercel
-Root Directory: `apps/miniapp`, Framework: Vite, Build: `npm run build`, Output: `dist`.
-Переменные: `VITE_API_URL` (адрес сервера на Render). После деплоя адрес Vercel указать
-в `MINIAPP_URL` сервера и в @BotFather → Bot Settings → Configure Mini App.
+Деплоится вместе с сервером одним проектом из корня репозитория (см. `vercel.json`). API на том же домене, поэтому `VITE_API_URL` в продакшене не нужен.

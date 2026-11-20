@@ -1,9 +1,9 @@
 import express from 'express';
 import request from 'supertest';
 import { describe, expect, it } from 'vitest';
-import { createApi } from '../src/api';
-import { signInitData } from '../src/auth';
-import { setup, TG } from './helpers';
+import { createApi } from '../src/api.js';
+import { signInitData } from '../src/auth.js';
+import { setup, TG } from './helpers.js';
 
 const TOKEN = '123:abc';
 const initData = () =>

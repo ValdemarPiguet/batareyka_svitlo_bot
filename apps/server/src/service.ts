@@ -11,9 +11,9 @@ import {
   type Interval,
   type PlanResult,
   type SystemProfile,
-} from '@batareyka/calc';
-import type { QueueSchedule, SvitlomapClient } from './svitlomap';
-import { homeIdFor, type HomeDoc, type Store, type UserDoc } from './store/types';
+} from '../../../packages/calc/src/index.js';
+import type { QueueSchedule, SvitlomapClient } from './svitlomap.js';
+import { homeIdFor, type HomeDoc, type Store, type UserDoc } from './store/types.js';
 
 export interface ScheduleInfo {
   emergency: boolean;

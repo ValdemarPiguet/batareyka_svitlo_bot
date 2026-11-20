@@ -1,9 +1,9 @@
-import { DEVICE_TEMPLATES, type Device } from '@batareyka/calc';
+import { DEVICE_TEMPLATES, type Device, type Priority } from '../../../packages/calc/src/index.js';
 import express, { type NextFunction, type Request, type Response } from 'express';
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
-import { verifyInitData, type TelegramUser } from './auth';
-import type { BatteryService } from './service';
+import { verifyInitData, type TelegramUser } from './auth.js';
+import type { BatteryService } from './service.js';
 
 declare module 'express-serve-static-core' {
   interface Request {
@@ -29,7 +29,7 @@ const deviceSchema = z.object({
   avgW: z.number().min(0).max(20_000),
   peakW: z.number().min(0).max(30_000),
   whPerUse: z.number().min(0).max(20_000).optional(),
-  priority: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+  priority: z.number().int().min(1).max(3).transform((v) => v as Priority),
   order: z.number().int().min(0).max(10_000),
   enabled: z.boolean(),
   source: z.enum(['template', 'label', 'measured', 'history']).optional(),

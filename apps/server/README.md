@@ -1,6 +1,6 @@
 # apps/server
 
-Бот (grammY) + API для Mini App (Express). Деплой на Render. Расчёт берётся из `@batareyka/calc`.
+Бот (grammY) + API для Mini App (Express). Деплой на Vercel (функция `api/index.ts`). Расчёт берётся из `packages/calc` (импорт по относительному пути, чтобы работало в функции Vercel без сборки пакета).
 
 ## Что умеет
 - Бот: `/start` (подтягивает подочередь из «Обраного» @svitlomap_bot), `/battery 58`, просто `58`,
@@ -18,10 +18,16 @@
 
 ## Firestore
 Отдельный Firebase-проект → Project settings → Service accounts → Generate new private key.
-Локально: путь к файлу в `FIREBASE_SERVICE_ACCOUNT_FILE`. На Render: содержимое JSON целиком в `FIREBASE_SERVICE_ACCOUNT`.
+Локально: путь к файлу в `FIREBASE_SERVICE_ACCOUNT_FILE`. На Vercel: содержимое JSON целиком в `FIREBASE_SERVICE_ACCOUNT`.
 Ключ не коммитить: файлы `*firebase*.json` и `service-account*.json` в `.gitignore`.
 
-## Render
-Web Service, root — корень репозитория. Build: `npm install`. Start: `npm start -w @batareyka/server`.
-Переменные: `BOT_TOKEN`, `BATAREYKA_API_KEY`, `MINIAPP_URL`, `FIREBASE_SERVICE_ACCOUNT`,
-`WEBHOOK_URL` (адрес сервиса на Render), `WEBHOOK_SECRET`.
+## Деплой на Vercel
+Бэкенд работает как одна функция Vercel (`api/index.ts` в корне репозитория) рядом с Mini App,
+настройки в `vercel.json`. Вебхук бота: `/api/telegram`.
+После деплоя один раз откройте `https://<адрес>/api/telegram/setup?secret=<WEBHOOK_SECRET>`:
+это ставит вебхук, команды и кнопку Mini App в меню бота.
+
+Переменные Vercel: `BOT_TOKEN`, `BATAREYKA_API_KEY`, `FIREBASE_SERVICE_ACCOUNT` (JSON целиком),
+`WEBHOOK_SECRET`, `MINIAPP_URL` (адрес проекта на Vercel).
+
+`src/index.ts` — тот же сервер как обычный процесс: локально (long polling) или на любом Node-хостинге.

@@ -4,9 +4,9 @@ import {
   energyNeededWh,
   loadW,
   runtimeHours,
-} from './energy';
-import { checkPeaks } from './peaks';
-import type { Device, PlanInput, PlanResult, Verdict } from './types';
+} from './energy.js';
+import { checkPeaks } from './peaks.js';
+import type { Device, PlanInput, PlanResult, Verdict } from './types.js';
 
 /** Остаток меньше этой доли от E_avail — вердикт «впритык». */
 export const TIGHT_SPARE_RATIO = 0.1;

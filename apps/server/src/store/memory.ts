@@ -1,5 +1,5 @@
-import type { Device } from '@batareyka/calc';
-import type { HomeDoc, PlanDoc, ReadingDoc, Store, UserDoc } from './types';
+import type { Device } from '../../../../packages/calc/src/index.js';
+import type { HomeDoc, PlanDoc, ReadingDoc, Store, UserDoc } from './types.js';
 
 export class MemoryStore implements Store {
   users = new Map<number, UserDoc>();

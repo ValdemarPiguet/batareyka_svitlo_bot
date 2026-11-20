@@ -4,7 +4,7 @@ Telegram-бот «Батарейка» + Mini App, который отвечае
 Полная спецификация: https://claude.ai/artifact/T8a5mpAZRLfpHpiPDmr3iE
 
 ## Стек
-- Монорепо: `packages/calc` (чистый TS, логика расчёта + тесты), `apps/miniapp` (React + TypeScript + Vite + Tailwind, деплой на Vercel), `apps/server` (Node + Express + grammY: бот и API, деплой на Render).
+- Монорепо: `packages/calc` (чистый TS, логика расчёта + тесты), `apps/miniapp` (React + TypeScript + Vite + Tailwind, деплой на Vercel), `apps/server` (Node + Express + grammY: бот и API). Деплой: один проект Vercel из корня — Mini App статикой + бэкенд функцией `api/index.ts` (Render отказались 2026-11-20).
 - БД: Firebase Firestore. Авторизация только по Telegram ID, initData проверяется на сервере (без Firebase Auth).
 - Графики отключений: api.svitlomap.com.ua (данные alerts.org.ua, указывать источник).
 - Язык интерфейса: украинский по умолчанию.

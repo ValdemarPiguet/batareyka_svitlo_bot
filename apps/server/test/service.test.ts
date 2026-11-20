@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { formatDuration, formatNext, formatPlan, parseBatteryArgs } from '../src/format';
-import { NOW, setup, TG } from './helpers';
+import { formatDuration, formatNext, formatPlan, parseBatteryArgs } from '../src/format.js';
+import { NOW, setup, TG } from './helpers.js';
 
 describe('parseBatteryArgs', () => {
   it('parses percent and optional manual time', () => {

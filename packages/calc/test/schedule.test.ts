@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { kyivDate, kyivLocalToUtc, kyivTime, minutesUntilPowerOn, parseScheduleDays } from '../src';
+import { kyivDate, kyivLocalToUtc, kyivTime, minutesUntilPowerOn, parseScheduleDays } from '../src/index.js';
 
 describe('Kyiv time', () => {
   it('winter is UTC+2, summer is UTC+3', () => {

@@ -1,4 +1,4 @@
-import type { DeviceMode, Priority } from './types';
+import type { DeviceMode, Priority } from './types.js';
 
 export interface DeviceTemplate {
   id: string;

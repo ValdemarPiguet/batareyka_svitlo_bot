@@ -1,6 +1,6 @@
 import { Bot, InlineKeyboard, type Context } from 'grammy';
-import { formatNext, formatPlan, parseBatteryArgs } from '../format';
-import type { BatteryService } from '../service';
+import { formatNext, formatPlan, parseBatteryArgs } from '../format.js';
+import type { BatteryService } from '../service.js';
 
 const HELP =
   '🔋 Я Батарейка. Підкажу, чи вистачить заряду батареї до включення світла за графіком.\n\n' +

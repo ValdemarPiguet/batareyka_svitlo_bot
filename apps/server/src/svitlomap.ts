@@ -1,4 +1,4 @@
-import type { ScheduleDay } from '@batareyka/calc';
+import type { ScheduleDay } from '../../../packages/calc/src/index.js';
 
 export interface Region {
   oblast: string;

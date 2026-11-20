@@ -1,7 +1,7 @@
-import type { Device } from '@batareyka/calc';
+import type { Device } from '../../../../packages/calc/src/index.js';
 import { cert, getApps, initializeApp } from 'firebase-admin/app';
 import { getFirestore, type Firestore } from 'firebase-admin/firestore';
-import type { HomeDoc, PlanDoc, ReadingDoc, Store, UserDoc } from './types';
+import type { HomeDoc, PlanDoc, ReadingDoc, Store, UserDoc } from './types.js';
 
 /**
  * Структура как в спеке:

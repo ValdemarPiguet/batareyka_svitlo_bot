@@ -1,8 +1,8 @@
-import type { Device } from '@batareyka/calc';
-import { BatteryService } from '../src/service';
-import { MemoryStore } from '../src/store/memory';
-import { homeIdFor } from '../src/store/types';
-import { SvitlomapClient } from '../src/svitlomap';
+import type { Device } from '../../../packages/calc/src/index.js';
+import { BatteryService } from '../src/service.js';
+import { MemoryStore } from '../src/store/memory.js';
+import { homeIdFor } from '../src/store/types.js';
+import { SvitlomapClient } from '../src/svitlomap.js';
 
 export const TG = 111;
 // 2026-11-20 07:00 по Киеву.

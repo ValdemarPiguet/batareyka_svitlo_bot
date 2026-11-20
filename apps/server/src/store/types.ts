@@ -1,4 +1,4 @@
-import type { Chemistry, Device, PlanResult } from '@batareyka/calc';
+import type { Chemistry, Device, PlanResult } from '../../../../packages/calc/src/index.js';
 
 export interface UserDoc {
   tgId: number;

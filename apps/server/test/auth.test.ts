@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { signInitData, verifyInitData } from '../src/auth';
+import { signInitData, verifyInitData } from '../src/auth.js';
 
 const TOKEN = '123:abc';
 const now = 1_800_000_000;

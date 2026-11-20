@@ -7,7 +7,7 @@ import {
   requiredSocPct,
   type Device,
   type SystemProfile,
-} from '../src';
+} from '../src/index.js';
 
 const dev = (d: Partial<Device> & Pick<Device, 'id' | 'avgW'>): Device => ({
   name: d.id,

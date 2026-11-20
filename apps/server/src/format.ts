@@ -1,5 +1,5 @@
-import { kyivTime, type Device } from '@batareyka/calc';
-import type { NextOutcome, PlanOutcome } from './service';
+import { kyivTime, type Device } from '../../../packages/calc/src/index.js';
+import type { NextOutcome, PlanOutcome } from './service.js';
 
 const round = (n: number, step = 10) => Math.round(n / step) * step;
 

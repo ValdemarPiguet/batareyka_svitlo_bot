@@ -1,4 +1,4 @@
-import type { Interval } from './outages';
+import type { Interval } from './outages.js';
 
 export const KYIV_TZ = 'Europe/Kyiv';
 

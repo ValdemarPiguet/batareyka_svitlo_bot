@@ -1,4 +1,4 @@
-import type { Device, PeakWarning } from './types';
+import type { Device, PeakWarning } from './types.js';
 
 /**
  * Проверка пиков: сумма пиковых мощностей одновременно работающих ≤ inverterMaxW.

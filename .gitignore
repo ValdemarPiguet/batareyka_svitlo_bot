@@ -10,3 +10,4 @@ dist/
 *firebase*adminsdk*.json
 *firebase*.json
 service-account*.json
+.vercel

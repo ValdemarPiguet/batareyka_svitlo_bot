@@ -48,12 +48,12 @@ export function App() {
   if (data.home.batteryWh <= 0) return <Onboarding home={data.home} onDone={load} />;
 
   return (
-    <div className="mx-auto min-h-screen max-w-lg pb-24">
+    <div className="mx-auto min-h-screen max-w-lg pb-28">
       {tab === 'check' && <Check home={data.home} devices={data.devices} onSetup={() => setTab('settings')} />}
       {tab === 'devices' && <Devices devices={data.devices} onChange={(devices) => setData({ ...data, devices })} />}
       {tab === 'settings' && <Settings home={data.home} onSaved={(home) => setData({ ...data, home })} />}
       <nav className="fixed inset-x-0 bottom-0 px-4 pb-[max(12px,env(safe-area-inset-bottom))]">
-        <div className="nav-glass mx-auto flex w-fit gap-0.5 rounded-full p-1">
+        <div className="nav-glass mx-auto flex w-fit gap-1 rounded-full p-1.5">
           {TABS.map((t) => (
             <button
               key={t.id}
@@ -61,11 +61,11 @@ export function App() {
                 haptic();
                 setTab(t.id);
               }}
-              className={`flex min-h-11 w-[80px] flex-col items-center justify-center gap-0.5 rounded-full text-[11px] font-medium transition duration-200 ${
+              className={`flex min-h-13 w-[88px] flex-col items-center justify-center gap-0.5 rounded-full text-[12px] font-medium transition duration-200 ${
                 tab === t.id ? 'bg-[var(--pill-active)] text-link' : 'text-fg'
               }`}
             >
-              <t.icon size={20} strokeWidth={tab === t.id ? 2.2 : 1.8} aria-hidden />
+              <t.icon size={22} strokeWidth={tab === t.id ? 2.2 : 1.8} aria-hidden />
               {t.label}
             </button>
           ))}

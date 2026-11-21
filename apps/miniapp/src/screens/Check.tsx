@@ -141,14 +141,14 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
           const on = !plan || plan.devicesOn.includes(d.id);
           const off = !!plan && plan.devicesOff.includes(d.id);
           return (
-            <div key={d.id} className="flex items-center gap-3 px-4 py-3">
+            <div key={d.id} className="flex items-center gap-3 px-4 py-2.5">
               {plan && (
                 <span className={`flex w-5 justify-center ${!enabled ? 'text-hint' : on ? 'text-emerald-600 dark:text-emerald-400' : 'text-danger'}`}>
                   {!enabled ? <Minus size={16} /> : on ? <CheckIcon size={18} strokeWidth={2.5} /> : <X size={18} strokeWidth={2.5} />}
                 </span>
               )}
               <div className="min-w-0 flex-1">
-                <div className={`truncate ${!enabled ? 'text-hint' : ''}`}>{d.name}</div>
+                <div className={`truncate text-[15px] ${!enabled ? 'text-hint' : ''}`}>{d.name}</div>
                 <div className={`text-xs ${off ? 'text-danger' : 'text-hint'}`}>{off ? 'Вимкніть' : `${d.avgW} Вт`}</div>
               </div>
               <Toggle label={d.name} on={enabled} onChange={(v) => toggle(d.id, v)} />
@@ -159,9 +159,9 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
   );
 
   return (
-    <div className="space-y-4 p-4">
-      <div className="flex items-center justify-between px-2 pt-3 pb-1">
-        <h1 className="text-[28px] leading-tight font-bold tracking-tight">Вистачить?</h1>
+    <div className="space-y-3 px-3 py-3">
+      <div className="flex items-center justify-between px-1 pt-2">
+        <h1 className="text-[22px] leading-tight font-bold tracking-tight">Вистачить?</h1>
         <button
           type="button"
           aria-label="Як це працює"
@@ -169,9 +169,9 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
             haptic();
             setIntro(true);
           }}
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--fill)] text-fg/70 active:opacity-60"
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--fill)] text-fg/70 active:opacity-60"
         >
-          <Info size={20} />
+          <Info size={18} />
         </button>
       </div>
       <Sheet open={intro} onClose={closeIntro} content={INTRO} />
@@ -235,9 +235,9 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
 
       {runtimeNow !== null && (
         <>
-          <Card className="p-5">
-            <p className="flex items-center gap-2 text-[22px] font-bold tracking-tight">
-              <BatteryMedium size={26} className="text-accent" aria-hidden />
+          <Card>
+            <p className="flex items-center gap-2 text-[18px] font-bold tracking-tight">
+              <BatteryMedium size={22} className="text-accent" aria-hidden />
               {Number.isFinite(runtimeNow) ? `Вистачить на ${duration(Math.floor(runtimeNow * 60))}` : 'Вистачить надовго'}
             </p>
             <p className="mt-1 text-sm text-hint">
@@ -251,11 +251,11 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
 
       {plan && (
         <>
-          <Card className={`p-5 ${VERDICT[plan.verdict].cls}`} tint={VERDICT[plan.verdict].tint}>
-            <p className="flex items-center gap-2 text-[26px] font-bold tracking-tight">
+          <Card className={`${VERDICT[plan.verdict].cls}`} tint={VERDICT[plan.verdict].tint}>
+            <p className="flex items-center gap-2 text-[20px] font-bold tracking-tight">
               {(() => {
                 const Icon = VERDICT[plan.verdict].icon;
-                return <Icon size={28} strokeWidth={2.2} aria-hidden />;
+                return <Icon size={22} strokeWidth={2.2} aria-hidden />;
               })()}
               {VERDICT[plan.verdict].text}
             </p>

@@ -5,7 +5,7 @@ import { haptic, tg } from './lib/telegram';
 
 export const Card = ({ children, className = '', tint }: { children: ReactNode; className?: string; tint?: string }) => (
   <div
-    className={`glass rounded-[22px] ${/(^|\s)p-\d/.test(className) ? '' : 'p-4'} ${className}`}
+    className={`glass rounded-2xl ${/(^|\s)p-\d/.test(className) ? '' : 'px-4 py-3.5'} ${className}`}
     style={tint ? { background: `linear-gradient(135deg, ${tint}, var(--card-bg) 90%)` } : undefined}
   >
     {children}
@@ -35,7 +35,7 @@ export const Button = ({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={`min-h-[50px] rounded-2xl px-5 text-[17px] font-semibold transition duration-200 active:scale-[0.97] disabled:opacity-40 disabled:shadow-none ${styles} ${className}`}
+      className={`min-h-11 rounded-xl px-4 text-[15px] font-semibold transition duration-200 active:scale-[0.97] disabled:opacity-40 disabled:shadow-none ${styles} ${className}`}
     >
       {children}
     </button>
@@ -64,7 +64,7 @@ export const Field = ({
 );
 
 const inputCls =
-  'min-h-12 w-full rounded-xl border border-transparent bg-[var(--fill)] px-4 outline-none transition placeholder:text-hint focus:border-accent';
+  'min-h-11 w-full rounded-[10px] border border-transparent bg-[var(--fill)] px-4 outline-none transition placeholder:text-hint focus:border-accent';
 
 export const NumberInput = ({
   value,
@@ -147,7 +147,7 @@ export function Segmented<T extends string | number>({
           key={String(o.value)}
           type="button"
           onClick={() => onChange(o.value)}
-          className={`min-h-9 flex-1 rounded-[8px] px-2 text-[14px] leading-tight transition duration-200 ${
+          className={`min-h-8 flex-1 rounded-[8px] px-2 text-[13px] leading-tight transition duration-200 ${
             o.value === value ? 'pill-active font-semibold' : 'text-fg/70'
           }`}
         >
@@ -165,20 +165,20 @@ export const Toggle = ({ on, onChange, label }: { on: boolean; onChange: (v: boo
     aria-checked={on}
     aria-label={label}
     onClick={() => onChange(!on)}
-    className={`relative h-[30px] w-[52px] shrink-0 rounded-full transition duration-200 ${
+    className={`relative h-[26px] w-[44px] shrink-0 rounded-full transition duration-200 ${
       on ? 'bg-[#34c759]' : 'bg-[var(--fill)]'
     }`}
   >
     <span
-      className={`absolute top-[3px] h-6 w-6 rounded-full bg-white shadow-[0_2px_6px_rgb(0_0_0/0.2)] transition-all duration-200 ${
-        on ? 'left-[25px]' : 'left-[3px]'
+      className={`absolute top-[2px] h-[22px] w-[22px] rounded-full bg-white shadow-[0_2px_6px_rgb(0_0_0/0.2)] transition-all duration-200 ${
+        on ? 'left-[20px]' : 'left-[2px]'
       }`}
     />
   </button>
 );
 
 export const SectionTitle = ({ children }: { children: ReactNode }) => (
-  <h2 className="mb-2 px-4 text-[20px] font-semibold tracking-tight text-fg/80">{children}</h2>
+  <h2 className="mb-1.5 px-4 pt-1 text-[13px] font-medium uppercase tracking-wide text-hint">{children}</h2>
 );
 
 export const Spinner = () => (
@@ -244,7 +244,7 @@ export function Sheet({ open, onClose, content }: { open: boolean; onClose: () =
             <Icon size={44} strokeWidth={1.8} />
           </div>
         </div>
-        <h2 className="mx-auto mb-5 max-w-xs text-center text-[24px] leading-tight font-bold tracking-tight">{content.title}</h2>
+        <h2 className="mx-auto mb-5 max-w-xs text-center text-[21px] leading-tight font-bold tracking-tight">{content.title}</h2>
         {content.text && <p className="mb-5 text-center text-[16px] text-hint">{content.text}</p>}
         {content.items && (
           <ul className="mb-6 space-y-5">
@@ -252,8 +252,8 @@ export function Sheet({ open, onClose, content }: { open: boolean; onClose: () =
               <li key={it.title} className="flex gap-4">
                 <it.icon size={26} className="mt-0.5 shrink-0 text-accent" />
                 <div>
-                  <p className="text-[17px] font-semibold">{it.title}</p>
-                  <p className="text-[15px] leading-snug text-hint">{it.text}</p>
+                  <p className="text-[16px] font-semibold">{it.title}</p>
+                  <p className="text-[14px] leading-snug text-hint">{it.text}</p>
                 </div>
               </li>
             ))}

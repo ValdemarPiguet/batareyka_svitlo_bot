@@ -21,8 +21,8 @@ export function Settings({ home, onSaved }: { home: Home; onSaved: (h: Home) => 
   };
 
   return (
-    <div className="space-y-4 p-4">
-      <h1 className="px-2 pt-3 pb-1 text-[28px] leading-tight font-bold tracking-tight">Профіль</h1>
+    <div className="space-y-3 px-3 py-3">
+      <h1 className="px-1 pt-2 text-[22px] leading-tight font-bold tracking-tight">Профіль</h1>
       <SectionTitle>Система</SectionTitle>
       <Card>
         <SystemForm advanced home={draft} onChange={(p) => { setDraft((d) => ({ ...d, ...p })); setStatus('idle'); }} />

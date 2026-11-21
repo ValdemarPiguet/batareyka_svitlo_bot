@@ -93,12 +93,12 @@ export function Onboarding({ home: initial, onDone }: { home: Home; onDone: () =
   const s = steps[step]!;
 
   return (
-    <div className="mx-auto max-w-lg space-y-4 p-4">
+    <div className="mx-auto max-w-lg space-y-3 px-3 py-3">
       <div>
         <p className="text-sm text-hint">
           Крок {step + 1} з {steps.length}
         </p>
-        <h1 className="px-2 pt-3 pb-1 text-[28px] leading-tight font-bold tracking-tight">{s.title}</h1>
+        <h1 className="px-1 pt-2 text-[22px] leading-tight font-bold tracking-tight">{s.title}</h1>
       </div>
       <Card>{s.body}</Card>
       {error && <p className="text-sm text-danger">{error}</p>}

@@ -57,6 +57,7 @@ body { touch-action: pan-y; }
 input, select, textarea { font-size: 16px; } /* iOS не зумит поле при фокусе */
 html, body {
   min-height: 100%;
+  font-size: 15px;
   color: var(--color-fg);
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;

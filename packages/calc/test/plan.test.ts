@@ -86,6 +86,9 @@ describe('buildPlan — selection', () => {
     expect(r.devicesOn).toEqual(['router', 'laptop']);
     expect(r.devicesOff).toEqual(['heater']);
     expect(r.verdict).toBe('tight');
+    // з обігрівачем потрібно більше на 1.1 × 4 год × 1000 Вт
+    expect(r.eNeedAllWh - r.eNeedWh).toBeCloseTo(4400);
+    expect(r.eNeedAllWh).toBeGreaterThan(r.eAvailWh);
   });
 
   it("verdict 'no' when even mandatory does not fit, suggests what to switch off", () => {

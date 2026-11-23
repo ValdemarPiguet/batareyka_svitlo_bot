@@ -79,6 +79,7 @@ export function buildPlan(input: PlanInput): PlanResult {
     verdict,
     eAvailWh: eAvail,
     eNeedWh: eNeed,
+    eNeedAllWh: need(continuous),
     spareWh: spare,
     loadW: load,
     runtimeHours: runtimeHours(eAvail, load),

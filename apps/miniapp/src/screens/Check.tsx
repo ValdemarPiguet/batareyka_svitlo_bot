@@ -44,6 +44,28 @@ const VERDICT = {
   tight: { icon: AlertTriangle, text: 'Впритик', cls: 'text-amber-700 dark:text-amber-300', tint: 'rgb(245 158 11 / 0.24)' },
   no: { icon: CircleX, text: 'Не вистачить', cls: 'text-red-700 dark:text-red-300', tint: 'rgb(239 68 68 / 0.22)' },
 } as const;
+function EnergyBar({ label, need, avail, over }: { label: string; need: number; avail: number; over?: boolean }) {
+  const pct = avail > 0 ? (need / avail) * 100 : 100;
+  const short = need > avail;
+  return (
+    <div className="mt-3">
+      <div className="mb-1 flex justify-between text-xs">
+        <span>{label}</span>
+        <span className={short && over ? 'font-semibold text-danger' : 'font-semibold'}>
+          {wh(need)}
+          {short && over ? ' — не вистачить' : ''}
+        </span>
+      </div>
+      <div className="h-2 overflow-hidden rounded-full bg-[var(--glass-strong)]">
+        <div
+          className={`h-full rounded-full ${short && over ? 'bg-[var(--color-danger)]' : 'bg-current'}`}
+          style={{ width: `${Math.min(100, pct)}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
 const INTRO_KEY = 'batareyka.introSeen';
 const introSeen = () => {
   try {
@@ -262,18 +284,19 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
             <p className="mt-1 text-sm">
               {plan.verdict === 'no'
                 ? `Навіть обовʼязкові прилади розрядять батарею за ${duration(plan.runtimeHours * 60)}${outageNow ? `, приблизно о ${kyivTime(now + plan.runtimeHours * 3_600_000)}` : ''}.`
-                : outageNow || manualMin
-                  ? `Розраховано на ${duration(minutes)} без світла.`
-                  : `Якщо заряд буде ${soc}% на початку відключення (${duration(minutes)}).`}
+                : plan.devicesOff.length > 0
+                  ? `Вистачить, якщо вимкнути: ${plan.devicesOff.map(name).join(', ')}.`
+                  : outageNow || manualMin
+                    ? `Розраховано на ${duration(minutes)} без світла.`
+                    : `Якщо заряд буде ${soc}% на початку відключення (${duration(minutes)}).`}
             </p>
-            <div className="mt-3 h-2 overflow-hidden rounded-full bg-[var(--glass-strong)]">
-              <div
-                className="h-full rounded-full bg-current"
-                style={{ width: `${Math.min(100, plan.eAvailWh > 0 ? (plan.eNeedWh / plan.eAvailWh) * 100 : 100)}%` }}
-              />
-            </div>
-            <p className="mt-1 text-xs">
-              Потрібно {wh(plan.eNeedWh)} з {wh(plan.eAvailWh)} доступних (із запасом 10%)
+            <EnergyBar label="За планом" need={plan.eNeedWh} avail={plan.eAvailWh} />
+            {plan.eNeedAllWh > plan.eNeedWh + 1 && (
+              <EnergyBar label="Якщо нічого не вимикати" need={plan.eNeedAllWh} avail={plan.eAvailWh} over />
+            )}
+            <p className="mt-2 text-xs opacity-80">
+              Доступно {wh(plan.eAvailWh)} на {duration(minutes)}
+              {!(outageNow || manualMin) && ` при заряді ${soc}% на початку відключення`}, із запасом 10%
             </p>
           </Card>
 

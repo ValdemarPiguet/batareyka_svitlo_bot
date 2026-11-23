@@ -5,6 +5,9 @@ interface TgWebApp {
   ready(): void;
   disableVerticalSwipes?(): void;
   isVersionAtLeast?(v: string): boolean;
+  platform?: string;
+  isFullscreen?: boolean;
+  requestFullscreen?(): void;
   onEvent?(event: 'themeChanged', cb: () => void): void;
   expand(): void;
   HapticFeedback?: { impactOccurred(style: 'light' | 'medium'): void; selectionChanged(): void };
@@ -34,6 +37,14 @@ export function initTelegram() {
   tg.expand();
   // Свайп вниз по списку не должен закрывать Mini App.
   if (tg.isVersionAtLeast?.('7.7')) tg.disableVerticalSwipes?.();
+  // На телефоні — на весь екран, як Wallet (з будь-якої кнопки запуску, не лише з профілю бота).
+  if (tg.isVersionAtLeast?.('8.0') && (tg.platform === 'ios' || tg.platform === 'android') && !tg.isFullscreen) {
+    try {
+      tg.requestFullscreen?.();
+    } catch {
+      /* старий клієнт */
+    }
+  }
 }
 
 export const initData = (): string => tg?.initData || import.meta.env.VITE_DEV_INIT_DATA || '';

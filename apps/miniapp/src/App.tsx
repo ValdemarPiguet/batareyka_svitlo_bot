@@ -52,7 +52,7 @@ export function App() {
       {tab === 'check' && <Check home={data.home} devices={data.devices} onSetup={() => setTab('settings')} />}
       {tab === 'devices' && <Devices devices={data.devices} onChange={(devices) => setData({ ...data, devices })} />}
       {tab === 'settings' && <Settings home={data.home} onSaved={(home) => setData({ ...data, home })} />}
-      <nav className="fixed inset-x-0 bottom-0 px-4 pb-[max(12px,env(safe-area-inset-bottom))]">
+      <nav className="fixed inset-x-0 bottom-0 px-4 pb-[max(12px,var(--safe-bottom))]">
         <div className="nav-glass mx-auto flex w-fit gap-1 rounded-full p-1.5">
           {TABS.map((t) => (
             <button

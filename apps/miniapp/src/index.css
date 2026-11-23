@@ -46,6 +46,14 @@
 
 html { background: var(--color-bg); }
 body { background: transparent; }
+
+/* Повноекранний режим Telegram: зверху статус-бар і плаваючі кнопки «Закрити / ⋯».
+   Telegram передає їхню висоту змінними; поза Telegram вони нульові. */
+:root {
+  --safe-top: calc(var(--tg-safe-area-inset-top, 0px) + var(--tg-content-safe-area-inset-top, 0px));
+  --safe-bottom: max(env(safe-area-inset-bottom), var(--tg-safe-area-inset-bottom, 0px));
+}
+body { padding-top: var(--safe-top); }
 /* Экран закреплён по горизонтали: без сдвига влево-вправо и без «резинки». */
 html, body, #root {
   width: 100%;

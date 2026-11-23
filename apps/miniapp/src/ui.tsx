@@ -226,7 +226,7 @@ export function Sheet({ open, onClose, content }: { open: boolean; onClose: () =
         role="dialog"
         aria-modal="true"
         aria-label={content.title}
-        className="sheet-panel relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-t-[28px] bg-[var(--card-bg)] px-6 pt-6 pb-[max(20px,env(safe-area-inset-bottom))]"
+        className="sheet-panel relative max-h-[calc(100vh-var(--safe-top)-12px)] w-full max-w-lg overflow-y-auto rounded-t-[28px] bg-[var(--card-bg)] px-6 pt-6 pb-[max(20px,var(--safe-bottom))]"
       >
         <button
           type="button"

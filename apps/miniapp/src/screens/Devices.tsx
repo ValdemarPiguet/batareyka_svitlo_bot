@@ -2,6 +2,7 @@ import type { Device, DeviceMode, DeviceTemplate, Priority } from '@batareyka/ca
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { api, type NewDevice } from '../lib/api';
+import { DeviceIcon } from '../lib/deviceIcons';
 import { MODE_LABEL, PRIORITY_LABEL, SOURCE_LABEL } from '../lib/format';
 import { haptic } from '../lib/telegram';
 import { Button, Card, Field, NumberInput, SectionTitle, Segmented, TextInput, Toggle } from '../ui';
@@ -85,27 +86,31 @@ export function Devices({ devices, onChange }: { devices: Device[]; onChange: (d
     return (
       <div className="space-y-3 p-4">
         <h1 className="px-1 pt-2 text-[22px] leading-tight font-bold tracking-tight">Додати прилад</h1>
-        <Card className="divide-y divide-[var(--glass-edge)] p-0">
+        <Card className="inset-list p-0">
           {templates.map((t) => (
             <button
               key={t.id}
-              className="flex min-h-12 w-full items-center gap-3 px-4 text-left"
+              className="flex min-h-14 w-full items-center gap-3 px-4 py-2 text-left"
               onClick={() => {
                 setCatalog(false);
                 setEditing(deviceFromTemplate(t, nextOrder()));
               }}
             >
-              <span className="flex-1">{t.name}</span>
-              <span className="text-sm text-hint">{power(t)}</span>
+              <DeviceIcon templateId={t.id} name={t.name} />
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-[16px] font-medium">{t.name}</span>
+                <span className="block text-[13px] text-hint">{power(t)}</span>
+              </span>
             </button>
           ))}
           <button
-            className="flex min-h-12 w-full items-center px-4 text-left text-link"
+            className="flex min-h-14 w-full items-center gap-3 px-4 text-left text-link"
             onClick={() => {
               setCatalog(false);
               setEditing({ name: '', mode: 'constant', avgW: 0, peakW: 0, priority: 2, order: nextOrder(), enabled: true, source: 'label' });
             }}
           >
+            <DeviceIcon name="" />
             Свій прилад…
           </button>
         </Card>
@@ -125,15 +130,18 @@ export function Devices({ devices, onChange }: { devices: Device[]; onChange: (d
         return (
           <section key={p}>
             <SectionTitle>{PRIORITY_LABEL[p]}</SectionTitle>
-            <Card className="divide-y divide-[var(--glass-edge)] p-0">
+            <Card className="inset-list p-0">
               {list.length === 0 && <p className="px-4 py-3 text-sm text-hint">Немає приладів</p>}
               {list.map((d) => (
-                <div key={d.id} className={`flex items-center gap-2 px-4 py-3 ${d.enabled ? '' : 'opacity-50'}`}>
-                  <button className="min-w-0 flex-1 text-left" onClick={() => setEditing(d)}>
-                    <div className="truncate">{d.name}</div>
-                    <div className="text-xs text-hint">
+                <div key={d.id} className={`flex items-center gap-3 px-4 py-2.5 ${d.enabled ? '' : 'opacity-50'}`}>
+                  <button className="flex min-w-0 flex-1 items-center gap-3 text-left" onClick={() => setEditing(d)}>
+                    <DeviceIcon templateId={d.templateId} name={d.name} />
+                    <span className="min-w-0 flex-1">
+                    <div className="truncate text-[16px] font-medium">{d.name}</div>
+                    <div className="truncate text-[13px] text-hint">
                       {power(d)} · {SOURCE_LABEL[d.source ?? 'template']}
                     </div>
+                    </span>
                   </button>
                   <div className="flex flex-col">
                     <button aria-label="Вище" className="flex h-6 w-8 items-center justify-center text-hint disabled:opacity-20" disabled={p === 1} onClick={() => move(d, -1)}>

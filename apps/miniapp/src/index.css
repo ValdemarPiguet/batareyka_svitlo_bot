@@ -109,3 +109,18 @@ input[type='range'] { accent-color: var(--color-accent); }
 .sheet-in .sheet-backdrop { animation: fade-in 0.25s ease-out; }
 .sheet-out .sheet-panel { animation: sheet-down 0.25s ease-in forwards; }
 .sheet-out .sheet-backdrop { animation: fade-out 0.25s ease-in forwards; }
+
+/* Список як у Wallet: розділювач починається від тексту (після іконки) і не доходить до правого краю. */
+.inset-list > * { position: relative; }
+.inset-list > * + *::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--inset, 68px);
+  right: 16px;
+  height: 1px;
+  transform: scaleY(0.5);
+  transform-origin: top;
+  background: var(--divider);
+}
+.dark .inset-list > * + *::before { transform: none; }

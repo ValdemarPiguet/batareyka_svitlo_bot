@@ -5,7 +5,7 @@ import { haptic, tg } from './lib/telegram';
 
 export const Card = ({ children, className = '', tint }: { children: ReactNode; className?: string; tint?: string }) => (
   <div
-    className={`glass rounded-2xl ${/(^|\s)p-\d/.test(className) ? '' : 'px-4 py-3.5'} ${className}`}
+    className={`glass rounded-[24px] ${/(^|\s)p-\d/.test(className) ? '' : 'px-4 py-3.5'} ${className}`}
     style={tint ? { background: `linear-gradient(135deg, ${tint}, var(--card-bg) 90%)` } : undefined}
   >
     {children}
@@ -64,7 +64,7 @@ export const Field = ({
 );
 
 const inputCls =
-  'min-h-11 w-full rounded-[10px] border border-transparent bg-[var(--fill)] px-4 outline-none transition placeholder:text-hint focus:border-accent';
+  'min-h-11 w-full rounded-xl border border-transparent bg-[var(--fill)] px-4 outline-none transition placeholder:text-hint focus:border-accent';
 
 export const NumberInput = ({
   value,

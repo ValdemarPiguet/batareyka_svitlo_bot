@@ -20,7 +20,7 @@ import { schedule as loadSchedule, type Schedule } from '../lib/svitlomap';
 import { haptic } from '../lib/telegram';
 import { DeviceIcon } from '../lib/deviceIcons';
 import { INTRO } from '../lib/tips';
-import { SocArc } from './SocArc';
+import { SocBattery } from './SocBattery';
 import { Card, NumberInput, Sheet, Toggle } from '../ui';
 
 const SOC_KEY = 'batareyka.soc';
@@ -205,7 +205,7 @@ export function Check({ home, devices, onSetup }: { home: Home; devices: Device[
         </Card>
       )}
 
-      <SocArc value={soc} onChange={setSoc} minPct={home.socMinPct} />
+      <SocBattery value={soc} onChange={setSoc} minPct={home.socMinPct} />
 
       <Card className="space-y-2">
         {!home.oblast || !home.subqueue ? (

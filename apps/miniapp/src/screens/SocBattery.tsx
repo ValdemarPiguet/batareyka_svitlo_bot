@@ -45,7 +45,7 @@ export function SocBattery({ value, onChange, minPct = 0 }: { value: number | nu
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={v}
-          className="relative h-[112px] flex-1 cursor-pointer touch-none overflow-hidden rounded-[28px] border-[3px] border-fg/15 bg-[var(--card-bg)] p-[5px]"
+          className="relative h-[112px] flex-1 cursor-pointer touch-none overflow-hidden rounded-[28px] border-[3px] border-[var(--battery-edge)] bg-[var(--card-bg)] p-[5px]"
           onPointerDown={(e) => {
             e.currentTarget.setPointerCapture?.(e.pointerId);
             drag.current = { x: e.clientX, moved: false };
@@ -87,10 +87,24 @@ export function SocBattery({ value, onChange, minPct = 0 }: { value: number | nu
               style={{ width: `${v}%`, background: `linear-gradient(180deg, ${fill}dd, ${fill})` }}
             />
             {minPct > 0 && (
-              <div className="absolute inset-y-2 w-0 border-l-2 border-dashed border-fg/25" style={{ left: `${minPct}%` }} />
+              <div
+                className="absolute inset-y-[10px] w-[2px] -translate-x-1/2 rounded-full"
+                style={{
+                  left: `${minPct}%`,
+                  background:
+                    v > minPct
+                      ? 'repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.85) 0 6px, transparent 6px 10px)'
+                      : 'repeating-linear-gradient(to bottom, rgb(142 142 147) 0 6px, transparent 6px 10px)',
+                }}
+              />
             )}
             {/* цифра: темна поверх порожньої частини, біла поверх заливки */}
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-fg">{number('')}</div>
+            <div
+              className="pointer-events-none absolute inset-0 flex items-center justify-center text-fg"
+              style={{ clipPath: `inset(0 0 0 ${v}%)` }}
+            >
+              {number('')}
+            </div>
             <div
               className="pointer-events-none absolute inset-0 flex items-center justify-center text-white"
               style={{ clipPath: `inset(0 ${100 - v}% 0 0)` }}
@@ -115,7 +129,7 @@ export function SocBattery({ value, onChange, minPct = 0 }: { value: number | nu
           />
         </div>
         {/* клема */}
-        <div className="ml-1 h-9 w-[9px] rounded-r-[5px] bg-fg/20" />
+        <div className="ml-1 h-9 w-[9px] rounded-r-[5px] bg-[var(--battery-edge)]" />
       </div>
       <div className="mt-2 flex justify-between px-1 text-[13px]">
         <span className={low ? 'font-medium text-danger' : 'text-hint'}>{low ? 'Нижче мінімуму' : 'Заряд батареї'}</span>
